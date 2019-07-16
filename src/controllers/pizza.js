@@ -1,3 +1,4 @@
+import _pick from 'lodash/pick'
 
 export async function list( { Pizza }, { config }, data) {
   let { limit, skip, search } = data
@@ -27,4 +28,20 @@ export async function get({Pizza}, { config }, data) {
   } catch(error) {
   }
   throw new NotFoundError('No pizza found')
+}
+
+export async function create({ Pizza }, { config } , body) {
+  try {
+    const data = _pick(body, ['name'])
+    const pizza = await Pizza.create(data)
+    if (pizza) {
+      console.log('new pizza has been created');
+      return {
+        pizza,
+      }
+    }
+  } catch(error) {
+    console.log(error);
+    throw error
+  }
 }

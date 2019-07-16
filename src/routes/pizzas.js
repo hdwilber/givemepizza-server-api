@@ -25,6 +25,15 @@ export default (models, { config }) => {
       next(error)
     }
   })
+
+  api.post('/', async function (req, res, next) {
+    try {
+      const result = await pizza.create(models, { config }, req.body)
+      res.send(result)
+    } catch(error) {
+      next(error)
+    }
+  })
   return api
 }
 
