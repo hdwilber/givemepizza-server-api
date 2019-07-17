@@ -35,10 +35,18 @@ The application is organized in this way:
 
 The CRUD operations required have been created for pizzas and toppings
 
+In order to run the application in development mode: 
+```
+npm run start:dev
+``` 
+
 
 ## Future updates
 - Access Control and Authorization: Permissions neither authentication modules have been added, yet.
   JSON Web tokens could be a good option to authorize requests in this case along with a custom authentication system with username/password or a third party authentication system.
 - Security headers: Some headers can improve partially the security in the browsers.
 - Logging system: It is important to have a logging manager. So, we can delegate that to winston library.
+- Production ready deployment and continuous integration. currently it is working in development mode only with nodemon.
+  It would be awesome to setup some scripts to have it working with pm2 and without babel.
+  And setup some continuous integration system
 
