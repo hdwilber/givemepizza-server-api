@@ -7,7 +7,7 @@ export async function list( { Pizza }, { config }, data) {
   limit = limit ? parseInt(limit, 10) : 100;
 
   const query = {};
-  const pizzas = await Pizza.find(query)
+  const pizzas = await Pizza.find(query).populate('toppings')
     .skip(skip)
     .limit(limit)
     .sort({ _id: -1 });
@@ -59,5 +59,24 @@ export async function remove({ Pizza }, { config } , _id) {
   } catch(error) {
     console.log(error);
     throw error
+  }
+}
+
+export async function addTopping({ Pizza, Topping }, { config }, { _id, toppingId }) {
+  const pizza = await Pizza.findOne({_id})
+  const topping = await Topping.findOne({_id: toppingId})
+  if (pizza && topping) {
+    return Pizza.update({ _id,
+      'toppings': { $ne: toppingId }
+    }, { $push: { toppings: toppingId } })
+  }
+}
+
+export async function removeTopping({ Pizza, Topping }, { config }, { _id, toppingId }) {
+  const pizza = await Pizza.findOne({_id})
+  const topping = await Topping.findOne({_id: toppingId})
+  if (pizza && topping) {
+    return Pizza.update({ _id,
+    }, { $pull: { toppings: toppingId } })
   }
 }

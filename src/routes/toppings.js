@@ -38,5 +38,15 @@ export default (models, { config }) => {
     }
   })
 
+  api.delete('/:_id', async function (req, res, next) {
+    try {
+      const { _id } = req.params
+      await topping.remove(models, { config }, _id)
+    } catch(error) {
+
+    }
+    res.send({ done: 'ok' })
+  })
+
   return api
 }

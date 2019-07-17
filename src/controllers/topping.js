@@ -31,3 +31,17 @@ export async function create({ Topping }, { config } , body) {
     throw error
   }
 }
+export async function remove({ Topping }, { config } , _id) {
+  try {
+    const result = await Topping.deleteOne({ _id, })
+    if (result) {
+      console.log('topping has been created');
+      return {
+        done: 'ok'
+      }
+    }
+  } catch(error) {
+    console.log(error);
+    throw error
+  }
+}
