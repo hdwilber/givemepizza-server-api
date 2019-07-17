@@ -1,7 +1,25 @@
 import mongoose from 'mongoose'
 
 const topping = {
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  createdAt: Date,
+  updatedAt: Date,
 }
 
-export default mongoose.Schema(topping)
+const ToppingSchema = mongoose.Schema(topping)
+
+ToppingSchema.path('name').validate(name => {
+  return name && name.length >= 3
+}, 'Name must be at least 3 characters')
+
+
+ToppingSchema.pre('save', function (next) {
+  this.createdAt = new Date()
+  this.updatedAt = new Date()
+  next()
+});
+
+export default ToppingSchema

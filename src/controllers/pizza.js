@@ -1,4 +1,5 @@
 import _pick from 'lodash/pick'
+import NotFoundError from '../common/notfound-error'
 
 export async function list( { Pizza }, { config }, data) {
   let { limit, skip, search } = data
@@ -38,6 +39,21 @@ export async function create({ Pizza }, { config } , body) {
       console.log('new pizza has been created');
       return {
         pizza,
+      }
+    }
+  } catch(error) {
+    console.log(error);
+    throw error
+  }
+}
+
+export async function remove({ Pizza }, { config } , _id) {
+  try {
+    const result = await Pizza.deleteOne({ _id, })
+    if (result) {
+      console.log('new pizza has been created');
+      return {
+        done: 'ok'
       }
     }
   } catch(error) {
