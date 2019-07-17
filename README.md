@@ -49,4 +49,5 @@ npm run start:dev
 - Production ready deployment and continuous integration. currently it is working in development mode only with nodemon.
   It would be awesome to setup some scripts to have it working with pm2 and without babel.
   And setup some continuous integration system
+- Unit tests: I was not able to setup neither fullfil unit tests for the application. This definitely is a must.
 
