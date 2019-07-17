@@ -66,9 +66,12 @@ export async function addTopping({ Pizza, Topping }, { config }, { _id, toppingI
   const pizza = await Pizza.findOne({_id})
   const topping = await Topping.findOne({_id: toppingId})
   if (pizza && topping) {
-    return Pizza.update({ _id,
+    await Pizza.update({ _id,
       'toppings': { $ne: toppingId }
     }, { $push: { toppings: toppingId } })
+    return {
+      topping,
+    }
   }
 }
 

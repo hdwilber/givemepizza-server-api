@@ -61,10 +61,8 @@ export default (models, { config }) => {
 
   api.put('/:_id/topping/:toppingId', async function (req, res, next) {
     const { _id, toppingId } = req.params
-    await pizza.addTopping(models, { config }, { _id, toppingId })
-    res.send({
-      done: 'ok',
-    })
+    const result = await pizza.addTopping(models, { config }, { _id, toppingId })
+    res.send(result)
   })
 
   api.delete('/:_id/topping/:toppingId', async function (req, res, next) {

@@ -21,7 +21,6 @@ export async function create({ Topping }, { config } , body) {
     const data = _pick(body, ['name'])
     const topping = await Topping.create(data)
     if (topping) {
-      console.log('new topping has been created');
       return {
         topping,
       }
@@ -35,7 +34,6 @@ export async function remove({ Topping }, { config } , _id) {
   try {
     const result = await Topping.deleteOne({ _id, })
     if (result) {
-      console.log('topping has been created');
       return {
         done: 'ok'
       }
