@@ -6,7 +6,7 @@ class NotFoundError  extends CustomError {
   }
   process(req, res, next) {
     res.status(404).json({
-      error: 'Not found',
+      error: this.message,
     })
   }
 }

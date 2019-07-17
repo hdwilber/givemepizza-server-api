@@ -17,29 +17,12 @@ export async function list( { Topping }, { config }, data) {
 }
 
 export async function create({ Topping }, { config } , body) {
-  try {
-    const data = _pick(body, ['name'])
-    const topping = await Topping.create(data)
-    if (topping) {
-      return {
-        topping,
-      }
-    }
-  } catch(error) {
-    console.log(error);
-    throw error
+  const data = _pick(body, ['name'])
+  const topping = await Topping.create(data)
+  return {
+    topping,
   }
 }
-export async function remove({ Topping }, { config } , _id) {
-  try {
-    const result = await Topping.deleteOne({ _id, })
-    if (result) {
-      return {
-        done: 'ok'
-      }
-    }
-  } catch(error) {
-    console.log(error);
-    throw error
-  }
+export function remove({ Topping }, { config } , _id) {
+  return Topping.deleteOne({ _id, })
 }

@@ -54,23 +54,30 @@ export default (models, { config }) => {
       const { _id } = req.params
       await pizza.remove(models, { config }, _id)
     } catch(error) {
-
     }
     res.send({ done: 'ok' })
   })
 
   api.put('/:_id/topping/:toppingId', async function (req, res, next) {
-    const { _id, toppingId } = req.params
-    const result = await pizza.addTopping(models, { config }, { _id, toppingId })
-    res.send(result)
+    try {
+      const { _id, toppingId } = req.params
+      const result = await pizza.addTopping(models, { config }, { _id, toppingId })
+      res.send(result)
+    } catch(error) {
+      next(error)
+    }
   })
 
   api.delete('/:_id/topping/:toppingId', async function (req, res, next) {
-    const { _id, toppingId } = req.params
-    await pizza.removeTopping(models, { config }, { _id, toppingId })
-    res.send({
-      done: 'ok',
-    })
+    try {
+      const { _id, toppingId } = req.params
+      await pizza.removeTopping(models, { config }, { _id, toppingId })
+      res.send({
+        done: 'ok',
+      })
+    } catch(error) {
+      next(error)
+    }
   })
   return api
 }

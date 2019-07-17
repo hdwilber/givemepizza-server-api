@@ -27,59 +27,44 @@ export async function get({Pizza}, { config }, data) {
       }
     }
   } catch(error) {
+    throw new NotFoundError('No pizza found')
   }
-  throw new NotFoundError('No pizza found')
 }
 
 export async function create({ Pizza }, { config } , body) {
-  try {
-    const data = _pick(body, ['name'])
-    const pizza = await Pizza.create(data)
-    if (pizza) {
-      console.log('new pizza has been created');
-      return {
-        pizza,
-      }
-    }
-  } catch(error) {
-    console.log(error);
-    throw error
+  const data = _pick(body, ['name'])
+  const pizza = await Pizza.create(data)
+  return {
+    pizza,
   }
 }
 
-export async function remove({ Pizza }, { config } , _id) {
-  try {
-    const result = await Pizza.deleteOne({ _id, })
-    if (result) {
-      console.log('new pizza has been created');
-      return {
-        done: 'ok'
-      }
-    }
-  } catch(error) {
-    console.log(error);
-    throw error
-  }
+export function remove({ Pizza }, { config } , _id) {
+  return Pizza.deleteOne({ _id, })
 }
 
 export async function addTopping({ Pizza, Topping }, { config }, { _id, toppingId }) {
-  const pizza = await Pizza.findOne({_id})
-  const topping = await Topping.findOne({_id: toppingId})
-  if (pizza && topping) {
+  try {
+    const pizza = await Pizza.findOne({_id})
+    const topping = await Topping.findOne({_id: toppingId})
     await Pizza.update({ _id,
       'toppings': { $ne: toppingId }
     }, { $push: { toppings: toppingId } })
     return {
       topping,
     }
+  } catch(error) {
+    throw new NotFoundError('Pizza or Topping do not exists')
   }
 }
 
 export async function removeTopping({ Pizza, Topping }, { config }, { _id, toppingId }) {
-  const pizza = await Pizza.findOne({_id})
-  const topping = await Topping.findOne({_id: toppingId})
-  if (pizza && topping) {
+  try {
+    const pizza = await Pizza.findOne({_id})
+    const topping = await Topping.findOne({_id: toppingId})
     return Pizza.update({ _id,
     }, { $pull: { toppings: toppingId } })
+  } catch(error) {
+    throw new NotFoundError('Pizza or Topping do not exists')
   }
 }

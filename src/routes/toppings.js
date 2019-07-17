@@ -43,7 +43,6 @@ export default (models, { config }) => {
       const { _id } = req.params
       await topping.remove(models, { config }, _id)
     } catch(error) {
-
     }
     res.send({ done: 'ok' })
   })
