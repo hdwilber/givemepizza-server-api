@@ -16,4 +16,11 @@ PizzaSchema.path('name').validate(name => {
   return name && name.length >= 3
 }, 'Name must be at least 3 characters')
 
+
+PizzaSchema.pre('save', function (next) {
+  this.createdAt = new Date()
+  this.updatedAt = new Date()
+  next()
+});
+
 export default PizzaSchema

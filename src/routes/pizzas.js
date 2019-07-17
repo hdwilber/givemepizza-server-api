@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import * as pizza from '../controllers/pizza'
 import _pick from 'lodash/pick'
+import _get from 'lodash/get'
 
 export default (models, { config }) => {
   const api = Router()
@@ -31,7 +32,20 @@ export default (models, { config }) => {
       const result = await pizza.create(models, { config }, req.body)
       res.send(result)
     } catch(error) {
-      next(error)
+      if (error.name === 'ValidationError') {
+        const { errors } = error 
+        const formattedError = Object.keys(errors).reduce((acc, key) => {
+          const message = _get(errors, `${key}.message`)
+          acc[key] = message
+          return acc
+        }, {})
+
+        res.status(422).send({
+          errors: formattedError,
+        })
+      } else {
+        next(error)
+      }
     }
   })
   return api
